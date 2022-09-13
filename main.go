@@ -19,7 +19,6 @@ type MessageModel struct {
 }
 
 func main() {
-
 	var message, header string
 	var count int
 	flag.StringVar(&header, "header", "", "write your header")
@@ -33,7 +32,8 @@ func main() {
 }
 
 func producer(ctx context.Context, header string, message string, count int) {
-	fmt.Println("producer started")
+
+	fmt.Println("Producer started.")
 
 	writer := &kafka.Writer{
 		Addr:     kafka.TCP("localhost:9092"),
@@ -53,11 +53,10 @@ func producer(ctx context.Context, header string, message string, count int) {
 		msg, err := json.Marshal(model)
 
 		if err != nil {
-			fmt.Println("An error is occured: ", err)
+			fmt.Println("JSON - An error is occured: ", err)
 			continue
 		}
 
-		//msg := message + " " + strconv.Itoa(i)
 		err2 := writer.WriteMessages(ctx,
 			kafka.Message{
 				Value: []byte(msg),
@@ -65,7 +64,7 @@ func producer(ctx context.Context, header string, message string, count int) {
 		)
 
 		if err2 != nil {
-			fmt.Println("An error is occured: ", err)
+			fmt.Println("WriteMessage - An error is occured: ", err)
 			continue
 		}
 
